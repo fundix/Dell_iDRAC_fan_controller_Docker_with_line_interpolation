@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  Dell_iDRAC_fan_controller_linear:
+  dell_idrac_fan_controller_linear:
     build:
         context: .
         dockerfile: Dockerfile    
-    container_name: Dell_iDRAC_fan_controller_linear
+    container_name: dell_idrac_fan_controller_linear
     restart: unless-stopped
     environment:
       - IDRAC_HOST=192.168.2.21
