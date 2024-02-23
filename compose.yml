@@ -3,7 +3,7 @@ version: '3.8'
 services:
   Dell_iDRAC_fan_controller_linear:
     image: tigerblue77/dell_idrac_fan_controller:latest
-    container_name: Dell_iDRAC_fan_controller
+    container_name: Dell_iDRAC_fan_controller_linear
     restart: unless-stopped
     environment:
       - IDRAC_HOST=192.168.2.21
