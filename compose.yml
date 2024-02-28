@@ -4,17 +4,17 @@ services:
   dell_idrac_fan_controller_linear:
     build:
         context: .
-        dockerfile: Dockerfile    
+        dockerfile: Dockerfile
     container_name: dell_idrac_fan_controller_linear
     restart: unless-stopped
     environment:
       - IDRAC_HOST=192.168.2.21
       - IDRAC_USERNAME=fan
       - IDRAC_PASSWORD=fan
-      - FAN_SPEED=0x08
+      - FAN_SPEED=7
+      - HIGH_FAN_SPEED=70
+      - CPU_TEMPERATURE_THRESHOLD=65
       - CPU_TEMPERATURE_THRESHOLD=65
       - CHECK_INTERVAL=10
       - DISABLE_THIRD_PARTY_PCIE_CARD_DELL_DEFAULT_COOLING_RESPONSE=false
-      - ENABLE_LINE_INTERPOLATION=true
       - CPU_TEMPERATURE_FOR_START_LINE_INTERPOLATION=40
-      - HIGH_FAN_SPEED=0x55
