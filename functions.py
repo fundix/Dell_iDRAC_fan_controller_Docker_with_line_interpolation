@@ -29,7 +29,7 @@ def apply_user_fan_control_profile(idrac_login_string, hexadecimal_fan_speed):
 def retrieve_temperatures(idrac_login_string):
     data = subprocess.check_output(
         f"ipmitool -I {idrac_login_string} sdr type temperature", shell=True).decode('utf-8')
-
+    pring(f"data {data}")
     # Vyhledání všech teplot
     temperature_readings = re.findall(r'\|\s*(\d{2})\s*degrees C', data)
 
@@ -45,7 +45,7 @@ def retrieve_temperatures(idrac_login_string):
             # Předpokládá se, že druhá teplota je CPU1
             cpu1_temperature = temperature_readings[1]
 
-    return cpu1_temperature, inlet_temperature
+    return int(cpu1_temperature), int(inlet_temperature)
 
 
 def enable_third_party_pcie_card_dell_default_cooling_response(idrac_login_string):
