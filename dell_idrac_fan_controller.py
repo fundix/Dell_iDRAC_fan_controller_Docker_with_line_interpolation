@@ -82,13 +82,11 @@ def calculate_fan_speed(cpu_temperature, start_temp, threshold_temp, low_speed, 
 
 def apply_interpolated_fan_speed(idrac_login_string, cpu_temperature):
     # Převod rychlostí ventilátoru z hex na dec
-    low_speed_dec = int(FAN_SPEED)
-    high_speed_dec = int(HIGH_FAN_SPEED, 16)
 
     # Výpočet cílové rychlosti
     target_speed = calculate_fan_speed(
         cpu_temperature, CPU_TEMPERATURE_FOR_START_LINE_INTERPOLATION,
-        CPU_TEMPERATURE_THRESHOLD, low_speed_dec, high_speed_dec)
+        CPU_TEMPERATURE_THRESHOLD, FAN_SPEED, HIGH_FAN_SPEED)
 
     # Převod cílové rychlosti zpět na hexadecimální formát
     target_speed_hex = f"0x{int(round(target_speed)):02x}"
