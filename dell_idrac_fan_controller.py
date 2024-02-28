@@ -5,11 +5,10 @@ import sys
 import time
 
 # Import functions from another file (functions.py needs to be implemented)
-from functions import apply_dell_fan_control_profile, apply_user_fan_control_profile, disable_third_party_pcie_card_dell_default_cooling_response, enable_third_party_pcie_card_dell_default_cooling_response, get_dell_server_model, retrieve_temperatures
+from functions import (apply_dell_fan_control_profile, apply_user_fan_control_profile, disable_third_party_pcie_card_dell_default_cooling_response,
+                       enable_third_party_pcie_card_dell_default_cooling_response, get_dell_server_model, retrieve_temperatures, graceful_exit)
 
 # Define graceful exit function
-def graceful_exit(signum, frame):
-    sys.exit(1)
 
 # Trap signals for container exit
 signal.signal(signal.SIGQUIT, graceful_exit)
@@ -20,7 +19,8 @@ signal.signal(signal.SIGTERM, graceful_exit)
 FAN_SPEED = os.getenv('FAN_SPEED', '5')
 CPU_TEMPERATURE_THRESHOLD = int(os.getenv('CPU_TEMPERATURE_THRESHOLD', '50'))
 CHECK_INTERVAL = int(os.getenv('CHECK_INTERVAL', '60'))
-DISABLE_THIRD_PARTY_PCIE_CARD_DELL_DEFAULT_COOLING_RESPONSE = os.getenv('DISABLE_THIRD_PARTY_PCIE_CARD_DELL_DEFAULT_COOLING_RESPONSE', 'false') == 'true'
+DISABLE_THIRD_PARTY_PCIE_CARD_DELL_DEFAULT_COOLING_RESPONSE = os.getenv(
+    'DISABLE_THIRD_PARTY_PCIE_CARD_DELL_DEFAULT_COOLING_RESPONSE', 'false') == 'true'
 
 # Convert FAN_SPEED to hexadecimal if not already
 if FAN_SPEED.startswith('0x'):
@@ -28,20 +28,22 @@ if FAN_SPEED.startswith('0x'):
     hexadecimal_fan_speed = FAN_SPEED
 else:
     decimal_fan_speed = int(FAN_SPEED)
-    hexadecimal_fan_speed = f'0x{decimal_fan_speed:02x}'
+    hexadecimal_fan_speed = f'0x{decimal_fan_speed: 02x}'
 
 # Check if the iDRAC host is set to 'local'
 IDRAC_HOST = os.getenv('IDRAC_HOST', 'local')
 if IDRAC_HOST == 'local':
     if not any(os.path.exists(path) for path in ["/dev/ipmi0", "/dev/ipmi/0", "/dev/ipmidev/0"]):
-        sys.exit("/!\ Could not open device at /dev/ipmi0 or /dev/ipmi/0 or /dev/ipmidev/0. Exiting.")
+        sys.exit(
+            "/!\ Could not open device at /dev/ipmi0 or /dev/ipmi/0 or /dev/ipmidev/0. Exiting.")
     IDRAC_LOGIN_STRING = 'open'
 else:
     IDRAC_USERNAME = os.getenv('IDRAC_USERNAME')
     IDRAC_PASSWORD = os.getenv('IDRAC_PASSWORD')
     print(f"iDRAC/IPMI username: {IDRAC_USERNAME}")
     print(f"iDRAC/IPMI password: {IDRAC_PASSWORD}")
-    IDRAC_LOGIN_STRING = f"lanplus -H {IDRAC_HOST} -U {IDRAC_USERNAME} -P {IDRAC_PASSWORD}"
+    IDRAC_LOGIN_STRING = (
+        f"lanplus -H {IDRAC_HOST} -U {IDRAC_USERNAME} -P {IDRAC_PASSWORD}")
 
 server_manufacturer, server_model = get_dell_server_model()
 if server_manufacturer != "DELL":
@@ -101,5 +103,8 @@ while True:
         print("    Date & time      Inlet  CPU 1  CPU 2  Exhaust          Active fan speed profile          Third-party PCIe card Dell default cooling response  Comment")
         i = 0
     current_time = time.strftime("%d-%m-%Y %T")
-    print(f"{current_time}  {inlet_temperature}°C  {cpu1_temperature}°C  {cpu2_temperature if is_cpu2_temperature_sensor_present else '-'}°C  {exhaust_temperature}°C  {'Dynamic' if IS_DELL_FAN_CONTROL_PROFILE_APPLIED else 'Manual'}  {third_party_pcie_card_dell_default_cooling_response_status}  {comment}")
+    print(
+        f"""{current_time}  {inlet_temperature}°C  {cpu1_temperature}°C  {cpu2_temperature if is_cpu2_temperature_sensor_present else '-'}°C  {exhaust_temperature}
+            °C  {'Dynamic' if IS_DELL_FAN_CONTROL_PROFILE_APPLIED else 'Manual'}  {third_party_pcie_card_dell_default_cooling_response_status}  {comment}"""
+    )
     i += 1
