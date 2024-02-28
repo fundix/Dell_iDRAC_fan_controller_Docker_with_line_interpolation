@@ -91,8 +91,7 @@ def apply_interpolated_fan_speed(idrac_login_string, cpu_temperature):
         CPU_TEMPERATURE_THRESHOLD, low_speed_dec, high_speed_dec)
 
     # Převod cílové rychlosti zpět na hexadecimální formát
-    target_speed_hex = f"0x{int(target_speed): 02x}"
-
+    target_speed_hex = f"0x{int(round(target_speed)):02x}"
     # Aplikace cílové rychlosti ventilátoru
     apply_user_fan_control_profile(idrac_login_string, target_speed_hex)
 
@@ -116,7 +115,7 @@ while True:
     else:
         # Aplikujeme výchozí nebo nízkou rychlost ventilátoru
         apply_user_fan_control_profile(
-            IDRAC_LOGIN_STRING, f"0x{int(FAN_SPEED): 02x}")
+            IDRAC_LOGIN_STRING, f"0x{int(FAN_SPEED):02x}")
         target = FAN_SPEED
         comment = "Default or low fan speed applied."
 
