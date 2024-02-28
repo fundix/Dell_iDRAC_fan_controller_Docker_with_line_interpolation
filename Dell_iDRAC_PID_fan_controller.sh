@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Enable strict bash mode
-set -euo pipefail
+# set -euo pipefail
 
 # Function to apply Dell's default dynamic fan control profile
 function apply_Dell_fan_control_profile () {
