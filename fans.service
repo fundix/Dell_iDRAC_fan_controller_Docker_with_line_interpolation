@@ -1,0 +1,16 @@
+[Unit]
+Description=Fan control
+After=network.target auditd.service
+
+[Service]
+Environment=IDRAC_HOST=local
+Environment=FAN_SPEED=30 
+Environment=CPU_TEMPERATURE_SETPOINT=40
+Environment=CPU_TEMPERATURE_THRESHOLD=50 
+Environment=CHECK_INTERVAL=2
+Environment=DISABLE_THIRD_PARTY_PCIE_CARD_DELL_DEFAULT_COOLING_RESPONSE=true
+ExecStart=/usr/local/bin/Dell_iDRAC_PID_fan_controller.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
