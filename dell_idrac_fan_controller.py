@@ -17,16 +17,16 @@ signal.signal(signal.SIGQUIT, graceful_exit)
 signal.signal(signal.SIGTERM, graceful_exit)
 
 # Prepare, format, and define initial variables
-FAN_SPEED = os.getenv('FAN_SPEED', '5')
-HIGH_FAN_SPEED = os.getenv('HIGH_FAN_SPEED', '70')
+FAN_SPEED = int(os.getenv('FAN_SPEED', '5'))
+HIGH_FAN_SPEED = int(os.getenv('HIGH_FAN_SPEED', '70'))
 CPU_TEMPERATURE_THRESHOLD = int(os.getenv('CPU_TEMPERATURE_THRESHOLD', '50'))
 CHECK_INTERVAL = int(os.getenv('CHECK_INTERVAL', '60'))
 DISABLE_THIRD_PARTY_PCIE_CARD_DELL_DEFAULT_COOLING_RESPONSE = os.getenv(
     'DISABLE_THIRD_PARTY_PCIE_CARD_DELL_DEFAULT_COOLING_RESPONSE', 'false') == 'true'
 IDRAC_LOGIN_STRING = ''
 
-CPU_TEMPERATURE_FOR_START_LINE_INTERPOLATION = os.getenv(
-    'CPU_TEMPERATURE_FOR_START_LINE_INTERPOLATION', '40')
+CPU_TEMPERATURE_FOR_START_LINE_INTERPOLATION = int(os.getenv(
+    'CPU_TEMPERATURE_FOR_START_LINE_INTERPOLATION', '40'))
 
 # Check if the iDRAC host is set to 'local'
 IDRAC_HOST = os.getenv('IDRAC_HOST', 'local')
