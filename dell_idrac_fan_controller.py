@@ -11,8 +11,9 @@ from functions import (apply_dell_fan_control_profile, apply_user_fan_control_pr
 # Define graceful exit function
 
 # Trap signals for container exit
+# Trap signals for container exit
 signal.signal(signal.SIGQUIT, graceful_exit)
-signal.signal(signal.SIGKILL, graceful_exit)
+# signal.signal(signal.SIGKILL, graceful_exit) # Toto je třeba odstranit, nelze zachytit SIGKILL
 signal.signal(signal.SIGTERM, graceful_exit)
 
 # Prepare, format, and define initial variables
