@@ -104,7 +104,7 @@ target = 0
 while True:
     time.sleep(CHECK_INTERVAL)
 
-    inlet_temperature, cpu1_temperature = retrieve_temperatures(
+    cpu1_temperature, inlet_temperature = retrieve_temperatures(
         IDRAC_LOGIN_STRING)
 
     if cpu1_temperature > CPU_TEMPERATURE_FOR_START_LINE_INTERPOLATION:
