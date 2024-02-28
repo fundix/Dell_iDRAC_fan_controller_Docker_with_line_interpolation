@@ -43,7 +43,7 @@ else:
     IDRAC_LOGIN_STRING = (
         f"lanplus -H {IDRAC_HOST} -U {IDRAC_USERNAME} -P {IDRAC_PASSWORD}")
 
-server_manufacturer, server_model = get_dell_server_model()
+server_manufacturer, server_model = get_dell_server_model(IDRAC_LOGIN_STRING)
 if server_manufacturer != "DELL":
     sys.exit("/!\ Your server isn't a Dell product. Exiting.")
 
